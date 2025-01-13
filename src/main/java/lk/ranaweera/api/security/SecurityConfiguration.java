@@ -27,9 +27,15 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(antMatchers(HttpMethod.POST, "/authenticate")).permitAll();
+                    auth.requestMatchers(antMatchers(HttpMethod.POST, "/login")).permitAll();
                     auth.requestMatchers("/error/**").permitAll();
                     auth.requestMatchers("/api/auth/**").permitAll();
                     auth.anyRequest().authenticated();
+//                    auth.requestMatchers(HttpMethod.POST, "/authenticate").permitAll();
+//                    auth.requestMatchers(HttpMethod.POST, "/login").permitAll();
+//                    auth.requestMatchers("/error").permitAll(); // Spring Security handles "/error" automatically
+//                    auth.requestMatchers("/api/auth/**").permitAll();
+//                    auth.anyRequest().authenticated();
                 })
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
