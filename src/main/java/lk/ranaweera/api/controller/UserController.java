@@ -20,40 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    private final JwtService jwtService;
     private UserService userService;
-//    private UserRepository userRepository;
-//    private RoleRepository roleRepository;
-
-//    @PostMapping("/authenticate")
-//    public UserLoginResponseDTO authenticate(@RequestBody UserAuthRequestDTO requestDTO) {
-//        System.out.println(" ====authenticate user " + requestDTO.getUsername());
-//
-//        User user = new User();
-//        user.setUsername(requestDTO.getUsername());
-//        user.setPassword(requestDTO.getPassword());
-//        user.setName(requestDTO.getName());
-//
-//        Role role = roleRepository.findById(requestDTO.getRole()).orElseThrow(
-//                ()->new RuntimeException()
-//        );
-//
-//        user.setRoles(List.of(role));
-//        userRepository.save(user);
-//
-//        List<String> roles = List.of(role.getName().toUpperCase());
-//        Map<String, Object> extraClaims = new HashMap<>();
-//        extraClaims.put("username", user.getUsername());
-//        extraClaims.put("password", user.getPassword());
-//        extraClaims.put("roles", roles);
-//        extraClaims.put("name", user.getName());
-//
-//        String token = jwtService.generateToken(user, extraClaims);
-//        System.out.println("===token " + token);
-//        return UserLoginResponseDTO.builder()
-//                .token(token)
-//                .build();
-//    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<UserLoginResponseDTO> authenticate(@RequestBody UserAuthRequestDTO userAuthRequestDTO) throws UserAlreadyRegisteredException {

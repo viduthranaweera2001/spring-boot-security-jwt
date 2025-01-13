@@ -14,10 +14,8 @@ import lk.ranaweera.api.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -49,12 +47,13 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findById(userAuthRequestDTO.getRole()).orElseThrow(
                 () -> new RuntimeException("User Role Not Found")
         );
+
         user.setRoles(List.of(role));
         user.setEmail(userAuthRequestDTO.getEmail());
 
         userRepository.save(user);
 
-        List<String> roles = List.of("ADMIN");
+        List<String> roles = List.of(userAuthRequestDTO.getRole().toString());
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("username", user.getUsername());
         extraClaims.put("password", user.getPassword());
@@ -79,7 +78,11 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException("Invalid username or password");
             }
 
-            List<String> roles = List.of("ADMIN");
+            List<String> roles = userRepository.findRolesByUsername(user.getUsername())
+                    .stream()
+                    .map(String::toUpperCase)
+                    .collect(Collectors.toList());
+
             Map<String, Object> extraClaims = new HashMap<>();
             extraClaims.put("username", user.getUsername());
             extraClaims.put("password", user.getPassword());
@@ -98,10 +101,4 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-//    private List<Role> getUserRoles(String username) {
-//        User user = userRepository.findByUsernameWithRoles(username)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        return user.getRoles();
-//    }
 }
