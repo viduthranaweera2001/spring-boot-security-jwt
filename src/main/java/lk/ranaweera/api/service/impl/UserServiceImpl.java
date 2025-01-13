@@ -44,20 +44,27 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userAuthRequestDTO.getUsername());
         user.setPassword(applicationConfig.passwordEncoder().encode(userAuthRequestDTO.getPassword()));
 
-        Role role = roleRepository.findById(userAuthRequestDTO.getRole()).orElseThrow(
-                () -> new RuntimeException("User Role Not Found")
-        );
+//        Role role = roleRepository.findById(userAuthRequestDTO.getRole()).orElseThrow(
+//                () -> new RuntimeException("User Role Not Found")
+//        );
+//        List<Role> roleNames = user.getRoles()
+//                .stream()
+//                .map(Role) // Assuming Role has a `getName()` method
+//                .collect(Collectors.toList());
 
-        user.setRoles(List.of(role));
+
+        List<Role> roles = roleRepository.findAllById(userAuthRequestDTO.getRole());
+
+        user.setRoles(roles);
         user.setEmail(userAuthRequestDTO.getEmail());
 
         userRepository.save(user);
 
-        List<String> roles = List.of(userAuthRequestDTO.getRole().toString());
+        List<String> roles1 = List.of(userAuthRequestDTO.getRole().toString());
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("username", user.getUsername());
         extraClaims.put("password", user.getPassword());
-        extraClaims.put("roles", roles);
+        extraClaims.put("roles", roles1);
         extraClaims.put("name", user.getName());
 
         String token = jwtService.generateToken(user, extraClaims);

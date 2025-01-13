@@ -37,11 +37,9 @@ public class UserController {
 
         UserLoginResponseDTO userLoginResponseDTO = userService.login(userAuthRequestDTO);
 
-        return new ResponseEntity<>(userLoginResponseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(userLoginResponseDTO, HttpStatus.OK);
     }
 
-
-//    @RolesAllowed("ROLE_ADMIN")
     @RolesAllowed("ADMIN")
     @GetMapping("/admin")
     public String sayHiAdmin() {
@@ -49,11 +47,17 @@ public class UserController {
         return "Hi Admin";
     }
 
-//    @RolesAllowed("ROLE_USER")
     @RolesAllowed("USER")
     @GetMapping("/user")
     public String sayHiUser() {
 
         return "Hi User";
+    }
+
+    @RolesAllowed({"ADMIN", "USER"})
+    @GetMapping("/user-admin")
+    public String sayHiUserAndAdmin() {
+
+        return "Hi User And Admin";
     }
 }
