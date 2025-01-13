@@ -6,7 +6,6 @@ import lk.ranaweera.api.controller.response.UserLoginResponseDTO;
 import lk.ranaweera.api.exception.UserAlreadyRegisteredException;
 import lk.ranaweera.api.exception.UserNotFoundException;
 import lk.ranaweera.api.controller.request.UserAuthRequestDTO;
-import lk.ranaweera.api.security.JwtService;
 import lk.ranaweera.api.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
