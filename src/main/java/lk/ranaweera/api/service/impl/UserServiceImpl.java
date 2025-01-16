@@ -44,15 +44,6 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userAuthRequestDTO.getUsername());
         user.setPassword(applicationConfig.passwordEncoder().encode(userAuthRequestDTO.getPassword()));
 
-//        Role role = roleRepository.findById(userAuthRequestDTO.getRole()).orElseThrow(
-//                () -> new RuntimeException("User Role Not Found")
-//        );
-//        List<Role> roleNames = user.getRoles()
-//                .stream()
-//                .map(Role) // Assuming Role has a `getName()` method
-//                .collect(Collectors.toList());
-
-
         List<Role> roles = roleRepository.findAllById(userAuthRequestDTO.getRole());
 
         user.setRoles(roles);
@@ -101,6 +92,7 @@ public class UserServiceImpl implements UserService {
             return UserLoginResponseDTO.builder()
                     .token(token)
                     .build();
+
         }
 
         else {
